@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 20th Bday CourtneyLatyyy!</title>
+    <style>
+        body {
+            background-color: #FFF9E6; /* Pastel yellow background */
+            color: #3E2723; /* Deep espresso brown text */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            user-select: none;
+            position: relative;
+        }
+
+        /* CRT Screen Scanline Overlay Effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.08) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 2;
+            background-size: 100% 4px, 6px 100%;
+            pointer-events: none;
+        }
+
+        /* Layout container */
+        .wrapper {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Customized typography: Times New Roman, Bold, Small Caps */
+        .banner {
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: bold;
+            font-variant: small-caps;
+            font-size: 26px;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+
+        /* Monospace layout container forcing all lines to center exactly */
+        .ascii-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Monospace is strictly enforced on the art arrays to guarantee alignment */
+        pre {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            line-height: 1.2;
+            font-size: 15px;
+            margin: 0;
+            white-space: pre;
+            text-align: left; /* Kept left internally so columns align perfectly */
+        }
+
+        /* Interactive bounding box for the cake */
+        #cake-container {
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        /* Terminal hidden message style */
+        #terminal-message {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 20px;
+            height: 20px;
+            color: #5D4037;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="banner">˚⟡˖ ࣪ happy 20th bday courtneylattttyyyy ⋆˚꩜｡⋆. 𐙚 ˚ </div>
+
+        <div class="ascii-block">
+            <!-- Interactive Cake Container (Click here to blow out candles) -->
+            <pre id="cake-container" onclick="blowOutCandles()"></pre>
+
+            <!-- Dancing Cat Animation Container -->
+            <pre id="cat-container"></pre>
+        </div>
+
+        <!-- CRT Terminal Typewriter Block -->
+        <div id="terminal-message"></div>
+    </div>
+
+    <script>
+        const cakeElement = document.getElementById('cake-container');
+        const catElement = document.getElementById('cat-container');
+        const terminalElement = document.getElementById('terminal-message');
+
+        let isBlownOut = false;
+        let messageStarted = false;
+
+        // Active flickering candle flame frames (Aligned with spacing)
+        const activeFlames = [
+            "      )   )   )   )   )      ",
+            "      i   i   i   i   i      "
+        ];
+
+        // Smoke streams replacing the active flames when blown out
+        const blownOutFlames = "      x   x   x   x   x      ";
+
+        // The distinct ASCII layers structure of the birthday cake
+        const cakeBase = `      ||  ||  ||  ||  ||
+    .------------------------.
+   (   o  .  o  .  o  .  o    )
+
+    |~~~~~~~~~~~~~~~~~~~~~~~~|
+    |  H A P P Y  B D A Y !  |
+    |                        |
+   [__________________________]`;
+
+        // Retro loops for the dancing cat
+        const catDanceFrames = [
+            `
+    \\(^-^)/
+     )   (
+    /     \\
+   (_/\\_/_)
+  ~*~ blow the candle ~*~`,
+            `
+     (^-^)/
+    <)   (
+    /     \\
+   (_/\\_/_)
+  ~*~ yippieeeee ~*~`
+        ];
+
+        // Excited loop for the cat once candles are blown out
+        const catCelebrateFrames = [
+            `
+    \\(O.O)/  *yeyyyyy!*
+     )   (
+    /     \\
+   (_/\\_/_)
+  ~*~ mwuahh ~*~`,
+            `
+    !(O.O)!  *yayyyyyy!*
+     )   (
+    /     \\
+   (_/\\_/_)
+  ~*~ mwuahh ~*~`
+        ];
+
+        let tick = 0;
+        const fps = 4;
+
+        function updateAnimation() {
+            if (!isBlownOut) {
+                // Render Candle Flame cycles + Base + Dancing cat
+                cakeElement.textContent = activeFlames[tick % 2] + "\n" + cakeBase;
+                catElement.textContent = catDanceFrames[tick % 2];
+            } else {
+                // Render Static smoke + Base + Excited party cat
+                cakeElement.textContent = blownOutFlames + "\n" + cakeBase;
+                catElement.textContent = catCelebrateFrames[tick % 2];
+            }
+
+            tick++;
+            setTimeout(updateAnimation, 1000 / fps);
+        }
+
+        // Typewriter terminal sequence
+        const hiddenText = "> hi courtneylattt... wishing you the best 20th bday....i love youu <";
+        let textIndex = 0;
+
+        function typeWriter() {
+            if (textIndex < hiddenText.length) {
+                terminalElement.textContent += hiddenText.charAt(textIndex);
+                textIndex++;
+                setTimeout(typeWriter, 50); // Speed of typewriter typing
+            }
+        }
+
+        // Triggered when clicking directly on the cake layer area
+        function blowOutCandles() {
+            if (!isBlownOut) {
+                isBlownOut = true;
+                if (!messageStarted) {
+                    messageStarted = true;
+                    setTimeout(typeWriter, 500); // Small delay before terminal prints text
+                }
+            }
+        }
+
+        // Start animation loop
+        updateAnimation();
+    </script>
+</body>
+</html>
